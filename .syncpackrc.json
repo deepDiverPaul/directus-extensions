@@ -1,0 +1,23 @@
+{
+	"$schema": "./node_modules/syncpack/dist/schema.json",
+	"indent": "\t",
+	"sortFirst": [
+		"name",
+		"type",
+		"version",
+		"private",
+		"packageManager",
+		"description",
+		"author",
+		"contributors",
+		"license",
+		"repository",
+		"keywords",
+		"icon",
+		"files",
+		"directus:extension",
+		"scripts",
+		"dependencies",
+		"devDependencies"
+	]
+}

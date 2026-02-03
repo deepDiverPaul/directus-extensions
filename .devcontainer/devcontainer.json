@@ -1,0 +1,27 @@
+{
+	"$schema": "https://raw.githubusercontent.com/devcontainers/spec/refs/heads/main/schemas/devContainer.base.schema.json",
+	"name": "directus-extensions",
+	"image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-24.04",
+	"features": {
+		"ghcr.io/devcontainers-extra/features/mise:1": {
+			"version": "2026.2.0"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"christian-kohler.npm-intellisense",
+				"davidanson.vscode-markdownlint",
+				"dbaeumer.vscode-eslint",
+				"editorconfig.editorconfig",
+				"esbenp.prettier-vscode",
+				"github.copilot",
+				"github.vscode-github-actions",
+				"github.vscode-pull-request-github",
+				"hverlin.mise-vscode",
+				"vercel.turbo-vsc"
+			]
+		}
+	},
+	"postCreateCommand": "mise trust && mise up && mise run install"
+}

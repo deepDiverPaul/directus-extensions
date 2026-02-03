@@ -1,0 +1,14 @@
+{
+	"$schema": "https://www.schemastore.org/prettierrc.json",
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"],
+	"singleQuote": true,
+	"overrides": [
+		{
+			"files": ["**/*.jsonc"],
+			"options": {
+				"trailingComma": "none"
+			}
+		}
+	]
+}

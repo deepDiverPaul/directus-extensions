@@ -1,0 +1,36 @@
+{
+	"name": "@skriptfabrik/directus-extensions",
+	"private": true,
+	"packageManager": "pnpm@10.28.2",
+	"description": "Extensions for Directus",
+	"keywords": [
+		"directus",
+		"directus-extensions"
+	],
+	"scripts": {
+		"commitlint": "commitlint",
+		"eslint": "eslint",
+		"knip": "knip",
+		"markdownlint": "markdownlint-cli2",
+		"prettier:format": "prettier --write .",
+		"prettier:lint": "prettier --check .",
+		"syncpack:format": "syncpack format",
+		"syncpack:lint": "syncpack lint",
+		"turbo:build": "turbo build",
+		"turbo:dev": "turbo dev",
+		"turbo:link": "turbo linl",
+		"turbo:validate": "turbo validate"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^20.4.1",
+		"@commitlint/config-conventional": "^20.4.1",
+		"@directus/eslint-config": "^0.1.0",
+		"@trivago/prettier-plugin-sort-imports": "^6.0.2",
+		"eslint": "^9.39.2",
+		"knip": "^5.83.0",
+		"markdownlint-cli2": "^0.20.0",
+		"prettier": "^3.8.1",
+		"syncpack": "^13.0.4",
+		"turbo": "^2.8.2"
+	}
+}

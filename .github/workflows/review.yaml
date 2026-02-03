@@ -1,0 +1,136 @@
+name: Review Changes
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint-commit-messages:
+    name: Lint Commit Messages
+    if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-version-file: .node-version
+
+      - name: 🔍 Run commitlint to lint all commit messages
+        run: |
+          pnpm -s run commitlint \
+            --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} \
+            --to ${{ github.event.pull_request.head.sha }}
+
+  lint-consistency:
+    name: Lint Consistency of Versions and Ranges
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-version-file: .node-version
+
+      - name: 🔍 Run Syncpack to lint all versions and ranges
+        run: pnpm -s run syncpack:lint
+
+  lint-files-deps-exports:
+    name: Lint Files, Dependencies and Exports
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-version-file: .node-version
+
+      - name: 🔍 Find unused files, dependencies and exports
+        run: pnpm -s run knip --reporter github-actions
+
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-version-file: .node-version
+
+      - name: 🔍 Run markdownlint to lint all Markdown files
+        run: pnpm -s run markdownlint
+
+  lint-source-code:
+    name: Lint Source Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-version-file: .node-version
+
+      - name: 🔍 Run ESLint to find problems in source code
+        run: pnpm -s run eslint
+
+  validate-and-build:
+    name: Validate and Build
+    runs-on: ubuntu-latest
+    env:
+      TURBO_API: http://127.0.0.1:8000
+      TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha }}
+      TURBO_TEAM: ${{ github.repository }}
+      TURBO_TELEMETRY_DISABLED: 'true'
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-version-file: .node-version
+          turbo-s3-endpoint: nbg1.your-objectstorage.com
+          turbo-s3-region: nbg1
+          turbo-s3-bucket: turbo-bucket-1
+          turbo-s3-access-key: ${{ secrets.TURBO_S3_ACCESS_KEY }}
+          turbo-s3-secret-key: ${{ secrets.TURBO_S3_SECRET_KEY }}
+
+      - name: 🔍 Validate packages affected by changes against requirements
+        run: pnpm -s run turbo:validate --affected
+
+      - name: 🔨 Run build of packages affected by changes
+        run: pnpm -s run turbo:build --affected
