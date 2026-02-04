@@ -11,6 +11,7 @@
 	],
 	"icon": "extension",
 	"files": [
+		"CHANGELOG.md",
 		"dist"
 	],
 	"directus:extension": {
@@ -23,12 +24,16 @@
 		"build": "directus-extension build",
 		"dev": "directus-extension build -w --no-minify",
 		"link": "directus-extension link",
-		"validate": "directus-extension validate"
+		"validate": "directus-extension validate",
+		"release": "semantic-release"
 	},
 	"devDependencies": {
 		"@directus/extensions-sdk": "17.0.5",
 		"@directus/types": "^14.0.0",
 		"typescript": "^5.9.3",
 		"vue": "^3.5.27"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

@@ -1,0 +1,52 @@
+name: Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      directus-extension-package:
+        type: choice
+        description: Directus extension package to publish
+        required: true
+        options:
+          - variable-with-button-panel
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  directus-extension-package:
+    name: Directus Extension Package (${{ github.event.inputs.directus-extension-package }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: 🏗 Setup git user
+        uses: fregante/setup-git-user@v2
+
+      - name: 🏗 Setup Turborepo
+        uses: ./.github/actions/setup-turborepo
+        with:
+          node-registry-url: https://registry.npmjs.org
+          node-version-file: .node-version
+
+      - name: 🔨 Build Directus extension package
+        run: pnpm -s run build
+        working-directory: packages/${{ github.event.inputs.directus-extension-package }}
+
+      - name: 🚀 Bump version, update changelog, publish package and create release
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm -s run release
+        working-directory: packages/${{ github.event.inputs.directus-extension-package }}

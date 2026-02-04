@@ -3,11 +3,17 @@
 # Dependencies
 node_modules/
 
+# Dotenv environment variables file
+.env
+
 # Turbo
 .turbo/
 
 # Build outputs
 dist/
+
+# Release assets
+packages/*/*.tgz
 
 # Reports
 eslint-report.json

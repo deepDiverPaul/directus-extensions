@@ -31,10 +31,13 @@
 		"@commitlint/cli": "^20.4.1",
 		"@commitlint/config-conventional": "^20.4.1",
 		"@directus/eslint-config": "^0.1.0",
+		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/exec": "^7.1.0",
 		"eslint": "^9.39.2",
 		"knip": "^5.83.0",
 		"markdownlint-cli2": "^0.20.0",
 		"prettier": "^3.8.1",
+		"semantic-release": "^25.0.3",
 		"syncpack": "^13.0.4",
 		"turbo": "^2.8.2"
 	}
