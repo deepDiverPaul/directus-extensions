@@ -1,5 +1,11 @@
 # Changelog
 
+## [variable-with-button-panel-1.0.2](https://github.com/skriptfabrik/directus-extensions/compare/variable-with-button-panel-1.0.1...variable-with-button-panel-1.0.2) (2026-02-06)
+
+### 🐛 Bug Fixes
+
+- save insights store on submit ([#6](https://github.com/skriptfabrik/directus-extensions/issues/6)) ([1f9bd09](https://github.com/skriptfabrik/directus-extensions/commit/1f9bd0934fe2589c1509e0d191f9c7e5674c0780))
+
 ## [variable-with-button-panel-1.0.1](https://github.com/skriptfabrik/directus-extensions/compare/variable-with-button-panel-1.0.0...variable-with-button-panel-1.0.1) (2026-02-06)
 
 ### 🐛 Bug Fixes
